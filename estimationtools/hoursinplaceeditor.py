@@ -1,11 +1,13 @@
-from estimationtools.utils import EstimationToolsBase
-from pkg_resources import resource_filename
 from trac.core import implements, Component
 from trac.web.api import IRequestFilter, IRequestHandler
 from trac.web.chrome import ITemplateProvider, add_script
 
+from estimationtools.utils import EstimationToolsBase
+
+
 class HoursInPlaceEditor(EstimationToolsBase):
-    """A filter to implement in-place editing for estimated hours field in query page.
+    """A filter to implement in-place editing for estimated hours field in
+    query page.
     
     Requires Trac XML-RPC Plug-in.
     """
@@ -17,9 +19,8 @@ class HoursInPlaceEditor(EstimationToolsBase):
         return req.path_info == '/estimationtools/edithours.js'
 
     def process_request(self, req):
-        data = {}
-        data['field'] = self.estimation_field 
-        return 'edithours.html', {'data': data}, 'text/javascript' 
+        data = {'field': self.estimation_field}
+        return 'edithours.html', {'data': data}, 'text/javascript'
 
     # IRequestFilter methods
     def pre_process_request(self, req, handler):
@@ -41,7 +42,9 @@ class HoursInPlaceEditor(EstimationToolsBase):
 
     # ITemplateProvider methods
     def get_htdocs_dirs(self):
+        from pkg_resources import resource_filename
         return [('estimationtools', resource_filename(__name__, 'htdocs'))]
             
     def get_templates_dirs(self):
+        from pkg_resources import resource_filename
         return [resource_filename(__name__, 'templates')]

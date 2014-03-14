@@ -1,6 +1,9 @@
-from estimationtools.utils import get_closed_states, execute_query, EstimationToolsBase
-from trac.wiki.macros import WikiMacroBase
 from trac.wiki.api import parse_args
+from trac.wiki.macros import WikiMacroBase
+
+from estimationtools.utils import EstimationToolsBase, get_closed_states, \
+                                  execute_query
+
 
 class HoursRemaining(EstimationToolsBase, WikiMacroBase):
     """Calculates remaining estimated hours for the queried tickets.
@@ -37,4 +40,3 @@ class HoursRemaining(EstimationToolsBase, WikiMacroBase):
                 pass
 
         return "%g" % round(sum, 2)
-        

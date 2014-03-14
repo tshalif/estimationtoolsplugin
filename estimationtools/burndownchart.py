@@ -1,16 +1,22 @@
-from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
+import copy
 from datetime import timedelta
+from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
+
 from genshi.builder import tag
-from estimationtools.utils import parse_options, execute_query, get_estimation_field, get_closed_states, \
-        from_timestamp, get_serverside_charts, EstimationToolsBase
 from trac.core import TracError
-from trac.util.html import Markup
 from trac.util.text import unicode_quote, unicode_urlencode
 from trac.wiki.macros import WikiMacroBase
-import copy
 
-DEFAULT_OPTIONS = {'width': '800', 'height': '200', 'color': 'ff9900', 'expected': '0',
-                   'bgcolor': 'ffffff00', 'wecolor':'ccccccaa', 'colorexpected': 'ffddaa', 'weekends':'true', 'gridlines' : '0'}
+from estimationtools.utils import parse_options, execute_query, \
+                                  get_estimation_field, get_closed_states, \
+                                  from_timestamp, get_serverside_charts,\
+                                  EstimationToolsBase
+
+DEFAULT_OPTIONS = {'width': '800', 'height': '200', 'color': 'ff9900',
+                   'expected': '0', 'bgcolor': 'ffffff00',
+                   'wecolor':'ccccccaa', 'colorexpected': 'ffddaa',
+                   'weekends':'true', 'gridlines' : '0'}
+
 
 class BurndownChart(EstimationToolsBase, WikiMacroBase):
     """Creates burn down chart for selected tickets.
@@ -54,7 +60,8 @@ class BurndownChart(EstimationToolsBase, WikiMacroBase):
 
         # prepare options
         req = formatter.req
-        options, query_args = parse_options(self.env.get_db_cnx(), content, copy.copy(DEFAULT_OPTIONS))
+        options, query_args = parse_options(self.env.get_db_cnx(), content,
+                                            copy.copy(DEFAULT_OPTIONS))
 
         if not options['startdate']:
             raise TracError("No start date specified!")
@@ -78,7 +85,8 @@ class BurndownChart(EstimationToolsBase, WikiMacroBase):
         # build html for google chart api
         dates = sorted(timetable.keys())
         bottomaxis = "0:|" + ("|").join([str(date.day) for date in dates]) + \
-            "|1:|%s/%s|%s/%s" % (dates[0].month, dates[0].year, dates[ - 1].month, dates[ - 1].year)
+            "|1:|%s/%s|%s/%s" % (dates[0].month, dates[0].year,
+                                 dates[ - 1].month, dates[ - 1].year)
         leftaxis = "2,0,%s" % maxhours
         
         # add line for expected progress

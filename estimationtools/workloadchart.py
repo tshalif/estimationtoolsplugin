@@ -1,12 +1,17 @@
-from datetime import timedelta
-from estimationtools.utils import parse_options, execute_query, get_estimation_suffix, get_closed_states, \
-                get_serverside_charts, EstimationToolsBase
-from genshi.builder import tag
-from trac.util.text import unicode_quote, unicode_urlencode, obfuscate_email_address
-from trac.wiki.macros import WikiMacroBase
 import copy
+from datetime import timedelta
+
+from genshi.builder import tag
+from trac.util.text import unicode_quote, unicode_urlencode, \
+                           obfuscate_email_address
+from trac.wiki.macros import WikiMacroBase
+
+from estimationtools.utils import parse_options, execute_query, \
+                                  get_estimation_suffix, get_closed_states, \
+                                  get_serverside_charts, EstimationToolsBase
 
 DEFAULT_OPTIONS = {'width': '400', 'height': '100', 'color': 'ff9900'}
+
 
 class WorkloadChart(EstimationToolsBase, WikiMacroBase):
     """Creates workload chart for the selected tickets.

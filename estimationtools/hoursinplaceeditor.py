@@ -31,11 +31,10 @@ class HoursInPlaceEditor(EstimationToolsBase):
             realm = data['context'].resource.realm
         except:
             realm = None
-        if (realm in ('query', 'report', 'wiki', 'milestone')
-            and (not 'preview' in req.args)
-            and req.perm.has_permission('TICKET_MODIFY')
-            and req.perm.has_permission('XML_RPC')):
-            # add_script(req, 'estimationtools/jquery-1.2.3.min.js')
+        if realm in ('query', 'report', 'wiki', 'milestone') \
+                and (not 'preview' in req.args) \
+                and req.perm.has_permission('TICKET_MODIFY') \
+                and req.perm.has_permission('XML_RPC'):
             add_script(req, 'estimationtools/jquery.jeditable.mini.js')
             add_script(req, '/estimationtools/edithours.js')
         return template, data, content_type

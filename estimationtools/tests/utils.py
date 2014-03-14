@@ -5,7 +5,7 @@ from trac.test import EnvironmentStub, Mock
 from estimationtools.utils import EstimationToolsBase
 
 class EstimationToolsBaseTestCase(unittest.TestCase):
-    
+
     def test_disabled_without_estimation_field(self):
         if not hasattr(EnvironmentStub, 'is_enabled'):
             return # 0.12+ feature of mock env

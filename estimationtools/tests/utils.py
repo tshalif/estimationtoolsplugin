@@ -1,8 +1,10 @@
+# -*- coding: utf-8 -*-
 
 import unittest
 from trac.test import EnvironmentStub, Mock
 
 from estimationtools.utils import EstimationToolsBase
+
 
 class EstimationToolsBaseTestCase(unittest.TestCase):
 
@@ -13,7 +15,7 @@ class EstimationToolsBaseTestCase(unittest.TestCase):
             pass
         env = EnvironmentStub(enable=['estimationtools.*'])
         messages = []
-        env.log = Mock(error=lambda msg, *args: messages.append(msg))
+        env.log = Mock(error=lambda msg, *args: messages.append(msg % args))
         TestTool(env)
         self.assertEquals(False, env.is_enabled(TestTool))
         self.assertEquals(messages,
@@ -33,3 +35,11 @@ class EstimationToolsBaseTestCase(unittest.TestCase):
         TestTool(env)
         self.assertEquals(True, env.is_enabled(TestTool))
         self.assertEquals(messages, [])
+
+
+def suite():
+    return unittest.makeSuite(EstimationToolsBaseTestCase)
+
+
+if __name__ == '__main__':
+    unittest.main(defaultTest='suite')

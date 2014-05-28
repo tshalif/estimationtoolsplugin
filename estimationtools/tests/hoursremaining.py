@@ -1,8 +1,12 @@
-from estimationtools.hoursremaining import HoursRemaining
+# -*- coding: utf-8 -*-
+
+import unittest
+
 from trac.test import EnvironmentStub, Mock, MockPerm
 from trac.ticket.model import Ticket
 from trac.web.href import Href
-import unittest
+
+from estimationtools.hoursremaining import HoursRemaining
 
 
 class HoursRemainingTestCase(unittest.TestCase):
@@ -13,6 +17,7 @@ class HoursRemainingTestCase(unittest.TestCase):
         self.env.config.set('estimation-tools', 'estimation_field', 'hours_remaining')
         self.req = Mock(href = Href('/'),
                         abs_href = Href('http://www.example.com/'),
+                        locale=None,
                         perm = MockPerm(),
                         authname='anonymous',
                         tz='')
@@ -77,3 +82,10 @@ class HoursRemainingTestCase(unittest.TestCase):
         result = hoursRemaining.expand_macro(self.formatter, "", "summary=Test#One")
         self.assertEquals(result, '10')
 
+
+def suite():
+    return unittest.makeSuite(HoursRemainingTestCase)
+
+
+if __name__ == '__main__':
+    unittest.main(defaultTest='suite')

@@ -63,7 +63,7 @@ class EstimationToolsBase(Component):
             # No estimation field configured. Disable plugin and log error.
             self.log.error("EstimationTools (%s): "
                            "Estimation field not configured. "
-                           "Component disabled.", self.__class__.__name__,)
+                           "Component disabled.", self.__class__.__name__)
             self.env.disable_component(self)
 
 

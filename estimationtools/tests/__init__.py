@@ -1,14 +1,19 @@
+# -*- coding: utf-8 -*-
 
-from unittest import TestSuite, makeSuite
+import unittest
+
+from estimationtools.tests import burndownchart, hoursremaining, \
+                                  workloadchart, utils
+
 
 def test_suite():
-    suite = TestSuite()
-    import estimationtools.tests.burndownchart
-    suite.addTest(makeSuite(estimationtools.tests.burndownchart.BurndownChartTestCase))
-    import estimationtools.tests.hoursremaining
-    suite.addTest(makeSuite(estimationtools.tests.hoursremaining.HoursRemainingTestCase))
-    import estimationtools.tests.workloadchart
-    suite.addTest(makeSuite(estimationtools.tests.workloadchart.WorkloadChartTestCase))
-    import estimationtools.tests.utils
-    suite.addTest(makeSuite(estimationtools.tests.utils.EstimationToolsBaseTestCase))
+    suite = unittest.TestSuite()
+    suite.addTest(burndownchart.suite())
+    suite.addTest(hoursremaining.suite())
+    suite.addTest(workloadchart.suite())
+    suite.addTest(utils.suite())
     return suite
+
+
+if __name__ == '__main__':
+    unittest.main(defaultTest='test_suite')

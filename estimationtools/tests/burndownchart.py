@@ -1,13 +1,17 @@
+# -*- coding: utf-8 -*-
+
+import unittest
 from decimal import Decimal
 from datetime import datetime, timedelta
-from estimationtools.burndownchart import BurndownChart
-from estimationtools.utils import parse_options, urldecode
+
+from genshi.builder import QName
 from trac.test import EnvironmentStub, MockPerm, Mock
 from trac.ticket.model import Ticket
 from trac.util.datefmt import utc
 from trac.web.href import Href
-import unittest
-from genshi.builder import QName
+
+from estimationtools.burndownchart import BurndownChart
+from estimationtools.utils import parse_options, urldecode
 
 
 class BurndownChartTestCase(unittest.TestCase):
@@ -18,6 +22,7 @@ class BurndownChartTestCase(unittest.TestCase):
         self.env.config.set('estimation-tools', 'estimation_field', 'hours_remaining')
         self.req = Mock(href = Href('/'),
                         abs_href = Href('http://www.example.com/'),
+                        locale=None,
                         perm = MockPerm(),
                         authname='anonymous',
                         tz='')
@@ -283,3 +288,10 @@ class BurndownChartTestCase(unittest.TestCase):
                 ['100.00', '85.71', '71.43', '57.14', '42.86'],
                 Decimal('70')))
 
+
+def suite():
+    return unittest.makeSuite(BurndownChartTestCase)
+
+
+if __name__ == '__main__':
+    unittest.main(defaultTest='suite')

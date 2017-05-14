@@ -20,7 +20,8 @@ except ImportError:
 
 AVAILABLE_OPTIONS = ['startdate', 'enddate', 'today', 'width', 'height',
                      'color', 'bgcolor', 'wecolor', 'weekends', 'gridlines',
-                     'expected', 'colorexpected', 'title', 'remainingworkload']
+                     'expected', 'colorexpected', 'title', 'remainingworkload',
+                     'workhoursperday', 'showdueonly']
 
 
 def get_estimation_field():
@@ -91,6 +92,23 @@ class GoogleChartProxy(EstimationToolsBase):
         req.write(chart.read())
         raise RequestDone
 
+    pass
+
+def parse_date(datearg, extra_date_formats = []):
+    formats = extra_date_formats or []
+    formats.append("%Y-%m-%d")
+
+    err = None
+
+    for fmt in formats:
+        try:
+            return datetime(*strptime(datearg, fmt)[0:5]).date()
+        except ValueError, e:
+            err = e
+            pass
+        pass
+
+    raise err
 
 def parse_options(db, content, options):
     """Parses the parameters, makes some sanity checks, and creates default values
@@ -106,14 +124,12 @@ def parse_options(db, content, options):
 
     startdatearg = options.get('startdate')
     if startdatearg:
-        options['startdate'] = \
-            datetime(*strptime(startdatearg, "%Y-%m-%d")[0:5]).date()
+        options['startdate'] = parse_date(startdatearg)
 
     enddatearg = options.get('enddate')
     options['enddate'] = None
     if enddatearg:
-        options['enddate'] = \
-            datetime(*strptime(enddatearg, "%Y-%m-%d")[0:5]).date()
+        options['enddate'] = parse_date(enddatearg)
 
     if not options['enddate'] and options.get('milestone'):
         # use first milestone

@@ -20,7 +20,7 @@ except ImportError:
 
 AVAILABLE_OPTIONS = ['startdate', 'enddate', 'today', 'width', 'height',
                      'color', 'bgcolor', 'wecolor', 'weekends', 'gridlines',
-                     'expected', 'colorexpected', 'title']
+                     'expected', 'colorexpected', 'title', 'remainingworkload']
 
 
 def get_estimation_field():

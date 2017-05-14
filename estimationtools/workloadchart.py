@@ -51,15 +51,37 @@ class WorkloadChart(EstimationToolsBase, WikiMacroBase):
             if ticket['status'] in self.closed_states:
                 continue
             try:
-                estimation = float(ticket[self.estimation_field])
+                estimation = float(ticket[self.estimation_field] or 0.0)
+
+                if options.get('remainingworkload'):
+                
+                    completion_cursor = db.cursor()
+
+                    completion_cursor.execute("SELECT t.value AS totalhours, c.value AS complete FROM ticket tk LEFT JOIN ticket_custom t ON (tk.id = t.ticket AND t.name = 'totalhours') LEFT JOIN ticket_custom c ON (tk.id = c.ticket AND c.name = 'complete') WHERE tk.id = %s" % ticket['id'])
+
+                    for row in completion_cursor:
+                
+                        ticket['totalhours'], ticket['complete'] = row
+                        break
+                
+                    totalhours = float(ticket['totalhours'] or 0.0)
+
+                    completed = (float(ticket['complete'] or 0.0) / 100) * estimation
+                    completed_hours = min(estimation, max(totalhours, completed))
+
+                    estimation -= completed_hours
+
+                    pass
+                
                 owner = ticket['owner']
+
                 sum += estimation
                 if estimations.has_key(owner):
                     estimations[owner] += estimation
                 else:
                     estimations[owner] = estimation
             except:
-                pass
+                raise
 
         estimations_string = []
         labels = []
